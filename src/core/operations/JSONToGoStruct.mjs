@@ -7,6 +7,7 @@
 import Operation from "../Operation.mjs";
 import { jsonToGo } from "../lib/JSONToGoStruct.mjs";
 import JSON5 from "json5";
+import OperationError from "../errors/OperationError.mjs";
 
 /**
  * JSON To Go Struct operation
@@ -51,7 +52,12 @@ class JSONToGoStruct extends Operation {
     run(input, args) {
         const [typename, flatten, allOmitempty] = args;
         if (!input) return "";
-        const code = JSON.stringify(JSON5.parse(input));
+        let code;
+        try {
+            code = JSON.stringify(JSON5.parse(input));
+        } catch (err) {
+            throw new OperationError("Unable to parse input as JSON.\n" + err);
+        }
         const result = jsonToGo(code, typename, flatten, false, allOmitempty);
         return result["go"];
     }
