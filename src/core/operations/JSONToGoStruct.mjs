@@ -34,7 +34,7 @@ class JSONToGoStruct extends Operation {
             {
                 name: "Flatten",
                 type: "boolean",
-                value: false,
+                value: true,
             },
             {
                 name: "All Omit Empty",
